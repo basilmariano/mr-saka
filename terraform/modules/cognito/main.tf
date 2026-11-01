@@ -84,6 +84,26 @@ resource "aws_cognito_identity_provider" "google" {
     email    = "email"
     username = "sub"
   }
+
+  lifecycle {
+    # Cognito fills in Google's own endpoint URLs the moment the provider is
+    # created. They are not ours to declare, so Terraform sees keys it did not set
+    # and plans to delete them; AWS puts them straight back. Left alone that is a
+    # diff on EVERY plan forever, which is worse than untidy: it buries real drift
+    # in noise, and a drift check that always reports a change reports nothing.
+    #
+    # Ignoring the whole map would also stop us noticing a changed client_id or a
+    # rotated secret, so each server-owned key is named individually. The three
+    # keys we actually set stay under management.
+    ignore_changes = [
+      provider_details["attributes_url"],
+      provider_details["attributes_url_add_attributes"],
+      provider_details["authorize_url"],
+      provider_details["oidc_issuer"],
+      provider_details["token_request_method"],
+      provider_details["token_url"],
+    ]
+  }
 }
 
 resource "aws_cognito_user_pool_domain" "main" {

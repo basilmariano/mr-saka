@@ -24,5 +24,5 @@ oauth_callback_urls = ["ph.saka.saka://callback"]
 
 # Google sign-in additionally needs these two. Until they are set the pool offers
 # email and password only, through the same hosted UI.
-# google_client_id          = "....apps.googleusercontent.com"
-# google_client_secret_name = "saka/dev/google-oauth"
+google_client_id          = "668635904073-v5p6hshul4gsqnjpjak6t33lep4v133k.apps.googleusercontent.com"
+google_client_secret_name = "dev-saka-google-auth"

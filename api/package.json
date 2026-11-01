@@ -7,7 +7,15 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "tsc -p tsconfig.json",
-    "build:lambda": "./build.sh"
+    "build:lambda": "./build.sh",
+    "tf:init": "cd terraform && echo \"terraform: env=${ENV_NAME:-dev} workspace=${ENV_NAME:-dev} profile=${AWS_PROFILE:-basilmariano-dev}\" && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform init -input=false -backend-config=../../terraform/environments/${ENV_NAME:-dev}/backend.hcl && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform workspace select -or-create ${ENV_NAME:-dev}",
+    "tf:reconfigure": "cd terraform && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform init -reconfigure -input=false -backend-config=../../terraform/environments/${ENV_NAME:-dev}/backend.hcl && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform workspace select -or-create ${ENV_NAME:-dev}",
+    "tf:fmt": "terraform fmt -recursive ..",
+    "tf:validate": "cd terraform && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform validate",
+    "tf:plan": "cd terraform && echo \"terraform: env=${ENV_NAME:-dev} workspace=${ENV_NAME:-dev} profile=${AWS_PROFILE:-basilmariano-dev}\" && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform plan -input=false -out=tfplan -var-file=../../terraform/environments/${ENV_NAME:-dev}/main.tfvars",
+    "tf:apply": "cd terraform && echo \"terraform: env=${ENV_NAME:-dev} workspace=${ENV_NAME:-dev} profile=${AWS_PROFILE:-basilmariano-dev}\" && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform apply -input=false tfplan",
+    "tf:output": "cd terraform && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform output",
+    "tf:destroy": "cd terraform && echo \"terraform: env=${ENV_NAME:-dev} workspace=${ENV_NAME:-dev} profile=${AWS_PROFILE:-basilmariano-dev}\" && AWS_PROFILE=${AWS_PROFILE:-basilmariano-dev} terraform destroy -var-file=../../terraform/environments/${ENV_NAME:-dev}/main.tfvars"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.670.0",

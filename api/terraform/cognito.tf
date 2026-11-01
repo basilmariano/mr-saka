@@ -22,7 +22,7 @@ module "cognito" {
   deletion_protection = true
 
   google_client_id      = var.google_client_id
-  google_client_secret  = local.google_enabled ? data.aws_secretsmanager_secret_version.google[0].secret_string : ""
+  google_client_secret  = local.google_client_secret
   cognito_domain_prefix = var.cognito_domain_prefix
   oauth_callback_urls   = var.oauth_callback_urls
 }

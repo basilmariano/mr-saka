@@ -32,14 +32,21 @@ terraform -chdir=terraform/bootstrap apply
 # so a plan run against stale artifacts deploys stale code.
 cd api && npm ci && ./build.sh
 
-# Backend: table, REST API, Cognito pool, reference-data endpoint
-terraform -chdir=terraform init -backend-config=../../terraform/environments/dev/backend.hcl
-terraform -chdir=terraform workspace select dev || terraform -chdir=terraform workspace new dev
-terraform -chdir=terraform apply -var-file=../../terraform/environments/dev/main.tfvars
+# Backend: table, REST API, Cognito pool, reference-data endpoint.
+# The tf:* scripts follow the mr-billing house pattern and run from api/.
+# ENV_NAME picks BOTH the tfvars file and the workspace, and defaults to dev.
+# They only shell out to terraform, so npm run / pnpm / yarn are interchangeable.
+pnpm tf:init
+pnpm tf:plan          # read this before applying -- tf:apply replays it exactly
+pnpm tf:apply
+
+# Google sign-in is optional and needs its client secret to exist FIRST, under
+# the name in main.tfvars. Without both google_* values the pool offers email and
+# password only, through the same hosted UI, and the apply succeeds either way.
 
 # Point the client at what was just deployed
 cd ../app
-cp env.example.json env.json         # fill from `terraform -chdir=../api/terraform output`
+cp env.example.json env.json         # fill from `(cd ../api && pnpm tf:output)`
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs   # Drift codegen
 
@@ -257,7 +264,7 @@ This is the only scenario that proves a backup exists rather than that a setting
 
 **Also prove the second tier**: repeat steps 4–5 against a monthly recovery point rather than a PITR timestamp, which is the path that matters when the damage is found a season later and the 35-day window has already expired.
 
-> **Not yet runnable.** The monthly tier now exists in code (`terraform/modules/backup`), but nothing has been applied to AWS, so there is no table to damage and no recovery point to restore from. This scenario becomes runnable after T162, and its second half after T164 has been applied and at least one monthly copy has been taken.
+> **Half runnable now.** Dev is applied, so `dev-saka-crop-tracking` exists with PITR enabled and the first tier can be drilled today. The monthly tier cannot: the plan runs `cron(0 16 L * ? *)`, so the first recovery point is taken at 16:00 UTC on 30 Nov 2026 (midnight Manila, 1 Dec). Until then there is nothing to restore from, and steps 4-5 against a monthly recovery point stay blocked.
 
 ---
 
