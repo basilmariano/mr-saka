@@ -1,0 +1,44 @@
+# Flutter / Dart
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/build/
+app/ios/Pods/
+app/ios/.symlinks/
+app/android/.gradle/
+app/android/local.properties
+**/*.g.dart
+.packages
+.pub-cache/
+.pub/
+
+# Node
+node_modules/
+dist/
+api/build/
+
+# Env + secrets
+.env
+.env.local
+# Build-time backend config (app/env.example.json is the template)
+app/env.json
+*.pem
+*.key
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.iml
+*.swp
+*.log
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+tfplan
+crash.log
+# Real values stay out of the repo; environments/<env>/main.tfvars is committed,
+# anything auto-loaded is not.
+*.auto.tfvars

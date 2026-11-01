@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "publishedAt": "2026-11-01T00:00:00Z",
+  "isPlaceholder": true,
+  "placeholderWarning": "STAND-IN VALUES - NOT VERIFIED AGRONOMY. The variety names, growth stages and fertilizer products below come from the feature specification. The maturity days and per-hectare rates are structural placeholders chosen to exercise the code paths, NOT guidance from PhilRice or the Bureau of Plant Industry. Replace every rate and maturity figure with verified published values, and set isPlaceholder to false, before this reaches a real farmer. See research.md R9 and task T151.",
+  "varieties": [
+    {
+      "id": "00000000-0000-4000-8000-000000000101",
+      "name": "NSIC Rc222",
+      "crop": "rice",
+      "maturityDays": null,
+      "sourceAttribution": "PLACEHOLDER - maturity not yet transcribed from PhilRice"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000102",
+      "name": "NSIC Rc160",
+      "crop": "rice",
+      "maturityDays": null,
+      "sourceAttribution": "PLACEHOLDER - maturity not yet transcribed from PhilRice"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000103",
+      "name": "Other rice variety",
+      "crop": "rice",
+      "maturityDays": null,
+      "sourceAttribution": "PLACEHOLDER - farmer enters the expected harvest date"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000201",
+      "name": "Other corn variety",
+      "crop": "corn",
+      "maturityDays": null,
+      "sourceAttribution": "PLACEHOLDER - farmer enters the expected harvest date"
+    }
+  ],
+  "templates": [
+    {
+      "id": "00000000-0000-4000-8000-000000000301",
+      "crop": "rice",
+      "plantingMethod": "transplanted",
+      "sourceAttribution": "PLACEHOLDER - rates not yet transcribed from PhilRice / BPI",
+      "steps": [
+        {
+          "daysAfterPlanting": 0,
+          "growthStage": "Basal",
+          "product": "Complete 14-14-14",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 0
+        },
+        {
+          "daysAfterPlanting": 14,
+          "growthStage": "Early tillering",
+          "product": "Urea 46-0-0",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 1
+        },
+        {
+          "daysAfterPlanting": 35,
+          "growthStage": "Panicle initiation",
+          "product": "Urea 46-0-0",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000302",
+      "crop": "rice",
+      "plantingMethod": "directSeeded",
+      "sourceAttribution": "PLACEHOLDER - rates not yet transcribed from PhilRice / BPI",
+      "steps": [
+        {
+          "daysAfterPlanting": 0,
+          "growthStage": "Basal",
+          "product": "Complete 14-14-14",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 0
+        },
+        {
+          "daysAfterPlanting": 18,
+          "growthStage": "Early tillering",
+          "product": "Urea 46-0-0",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 1
+        },
+        {
+          "daysAfterPlanting": 40,
+          "growthStage": "Panicle initiation",
+          "product": "Muriate of Potash 0-0-60",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000303",
+      "crop": "corn",
+      "plantingMethod": "directSeeded",
+      "sourceAttribution": "PLACEHOLDER - rates not yet transcribed from BPI",
+      "steps": [
+        {
+          "daysAfterPlanting": 0,
+          "growthStage": "Basal",
+          "product": "Complete 14-14-14",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 0
+        },
+        {
+          "daysAfterPlanting": 25,
+          "growthStage": "Side-dress",
+          "product": "Urea 46-0-0",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 1
+        },
+        {
+          "daysAfterPlanting": 45,
+          "growthStage": "Tasseling",
+          "product": "Ammonium Sulfate 21-0-0",
+          "ratePerHectareGrams": 0,
+          "sortOrder": 2
+        }
+      ]
+    }
+  ]
+}

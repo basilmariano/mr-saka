@@ -1,0 +1,463 @@
+{
+  "@@locale": "en",
+  "appTitle": "Saka",
+  "@appTitle": {
+    "description": "App name. Saka is Filipino for farm."
+  },
+  "navHome": "Home",
+  "navFields": "Fields",
+  "navResults": "Results",
+  "homeEmptyTitle": "No croppings yet",
+  "homeEmptyBody": "Add a field, then start a cropping to begin tracking what you spend and earn.",
+  "homeStartCropping": "Start a cropping",
+  "homeActiveCroppings": "Active croppings",
+  "homeUpcomingApplications": "Fertilizer due next",
+  "homeUpcomingHarvests": "Harvest coming up",
+  "homeAwaitingClosure": "Harvested, not yet closed",
+  "syncUpToDate": "All records backed up",
+  "syncPending": "{count, plural, =1{1 record waiting to back up} other{{count} records waiting to back up}}",
+  "@syncPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncFailing": "Records are not being backed up",
+  "syncGuest": "Guest - saved on this phone only",
+  "@syncGuest": {
+    "description": "FR-060: a guest's records are not protected against losing the device, and the app says so plainly."
+  },
+  "fieldsTitle": "Fields",
+  "fieldAdd": "Add field",
+  "fieldName": "Field name",
+  "fieldArea": "Area (hectares)",
+  "fieldLocation": "Location (optional)",
+  "fieldNotes": "Notes (optional)",
+  "fieldAreaUnit": "ha",
+  "errorFieldNameBlank": "Enter a name for this field",
+  "errorFieldAreaNotPositive": "Area must be more than zero hectares",
+  "errorAmountNotPositive": "Enter an amount more than zero",
+  "errorPriceNotPositive": "Enter a price more than zero",
+  "errorBuyerBlank": "Enter who bought it",
+  "errorNotANumber": "Enter a number, like 2.5",
+  "errorTooManyDecimals": "Use fewer decimal places",
+  "resultExpenses": "Total spent",
+  "resultRevenue": "Total earned",
+  "resultProfit": "Profit",
+  "resultLoss": "Loss",
+  "resultYield": "Harvest",
+  "resultYieldPerHectare": "Tons per hectare",
+  "resultCostPerKg": "Cost per kilo produced",
+  "resultNotApplicable": "Not applicable",
+  "resultInProgress": "In progress",
+  "resultProvisional": "Provisional",
+  "resultFinal": "Final",
+  "@resultProvisional": {
+    "description": "FR-042a: a harvested but open cropping recalculates as costs and sales land."
+  },
+  "freshWeight": "fresh weight",
+  "bagsUnit": "bags",
+  "kgUnit": "kg",
+  "tonsUnit": "tons",
+  "guidanceDisclaimer": "These are general recommendations. Adjust them to your soil test results or the advice of your local agriculturist.",
+  "@guidanceDisclaimer": {
+    "description": "FR-026, shown wherever a fertilizer recommendation appears."
+  },
+  "guidanceUnverified": "Recommended amounts are not yet available for this crop.",
+  "@guidanceUnverified": {
+    "description": "Shown when the reference bundle is still a placeholder - research.md R9."
+  },
+  "guidanceSource": "Source: {attribution}",
+  "@guidanceSource": {
+    "placeholders": {
+      "attribution": {
+        "type": "String"
+      }
+    }
+  },
+  "actionSave": "Save",
+  "actionCancel": "Cancel",
+  "actionDelete": "Delete",
+  "fieldEdit": "Edit field",
+  "fieldArchive": "Archive field",
+  "fieldArchiveExplain": "This field has croppings, so it is archived instead of deleted. Its history is kept.",
+  "fieldNoCroppings": "No croppings on this field yet",
+  "fieldCroppingHistory": "Cropping history",
+  "croppingStart": "Start a cropping",
+  "croppingCrop": "Crop",
+  "croppingCropRice": "Rice",
+  "croppingCropCorn": "Corn",
+  "croppingVariety": "Variety",
+  "croppingMethod": "Planting method",
+  "croppingMethodTransplanted": "Transplanted",
+  "croppingMethodDirectSeeded": "Direct-seeded",
+  "croppingSeason": "Season planted",
+  "croppingSeasonWet": "Wet season",
+  "croppingSeasonDry": "Dry season",
+  "croppingPlantingDate": "Planting date",
+  "croppingExpectedHarvest": "Expected harvest",
+  "croppingExpectedHarvestHelp": "Worked out from the variety. Change it if you expect a different date.",
+  "croppingDaysSincePlanting": "{days} days since planting",
+  "@croppingDaysSincePlanting": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "statusPlanted": "Planted",
+  "statusGrowing": "Growing",
+  "statusHarvested": "Harvested",
+  "statusClosed": "Closed",
+  "fieldBusyTitle": "This field already has a cropping",
+  "fieldBusyBody": "{crop} planted {date} is still in the ground. Record its harvest before planting again.",
+  "@fieldBusyBody": {
+    "placeholders": {
+      "crop": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "closePreviousTitle": "Close the previous cropping?",
+  "closePreviousBody": "{crop} planted {date} was harvested but is still open. You can close it now, or leave it open to keep recording sales and costs.",
+  "@closePreviousBody": {
+    "placeholders": {
+      "crop": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "closePreviousLeaveOpen": "Leave it open",
+  "closePreviousClose": "Close it",
+  "closeCroppingTitle": "Close this cropping?",
+  "closeCroppingUnsold": "You still have {quantity} kg unsold. Closing means no more costs or sales will be recorded.",
+  "@closeCroppingUnsold": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "closeCroppingBody": "Closing means no more costs or sales will be recorded on this cropping.",
+  "closeCroppingConfirm": "Close cropping",
+  "reopenCropping": "Reopen to make corrections",
+  "croppingClosedNotice": "This cropping is closed. Reopen it to record anything more.",
+  "expensesTitle": "Expenses",
+  "expenseAdd": "Add expense",
+  "expenseDate": "Date",
+  "expenseCategory": "What for",
+  "expenseAmount": "Amount",
+  "expenseNotes": "Notes (optional)",
+  "expenseTotal": "Total spent",
+  "expenseNone": "No expenses recorded yet",
+  "categoryLandPreparation": "Land preparation",
+  "categorySeeds": "Seeds",
+  "categoryFertilizer": "Fertilizer",
+  "categoryPesticideHerbicide": "Pesticide / herbicide",
+  "categoryLabor": "Labor",
+  "categoryIrrigation": "Irrigation",
+  "categoryEquipmentRental": "Equipment rental",
+  "categoryHarvestingThreshing": "Harvesting / threshing",
+  "categoryHauling": "Hauling",
+  "categoryOther": "Other",
+  "whichCroppingTitle": "Which cropping is this for?",
+  "whichCroppingBody": "This field has more than one cropping open. Choose the one this belongs to.",
+  "croppingLabel": "{crop}, {season}, planted {date}",
+  "@croppingLabel": {
+    "placeholders": {
+      "crop": {
+        "type": "String"
+      },
+      "season": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "harvestTitle": "Harvest",
+  "harvestRecord": "Record harvest",
+  "harvestDate": "Harvest date",
+  "harvestBySacks": "By sacks",
+  "harvestByTotal": "Total weight",
+  "harvestSacks": "Number of sacks",
+  "harvestAvgPerSack": "Average wet kg per sack",
+  "harvestTotalKg": "Total wet kg",
+  "harvestFreshWeightNote": "Record the weight straight from the field, before drying.",
+  "harvestNone": "No harvest recorded yet",
+  "salesTitle": "Sales",
+  "saleAdd": "Record a sale",
+  "saleQuantity": "Quantity (kg)",
+  "salePricePerKg": "Price per kg",
+  "saleBuyer": "Buyer",
+  "saleDate": "Date sold",
+  "saleNone": "No sales recorded yet",
+  "saleRemaining": "{quantity} kg {basis} left unsold",
+  "@saleRemaining": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "basis": {
+        "type": "String"
+      }
+    }
+  },
+  "basisWet": "wet",
+  "basisDry": "dry",
+  "basisQuestion": "Are you selling this wet or dry?",
+  "basisQuestionHelp": "Most farmers sell the whole lot one way. You can change this while the cropping is open.",
+  "basisSellingWet": "Selling wet",
+  "basisSellingDry": "Selling dry",
+  "driedWeightTitle": "Dried weight",
+  "driedWeightBody": "How many kilos did the lot weigh after drying? Sales count down from this.",
+  "driedWeightField": "Dried weight (kg)",
+  "errorSaleNoHarvest": "Record the harvest before adding a sale",
+  "errorSaleExceeds": "That is more than the {quantity} kg left unsold",
+  "@errorSaleExceeds": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSaleDriedWeightMissing": "Enter the dried weight of the lot first",
+  "errorSaleNonPositive": "Enter a quantity more than zero",
+  "resultTitle": "Result",
+  "resultInProgressNote": "This cropping is still growing. Only what you have spent so far is shown.",
+  "resultProvisionalNote": "Still open. These figures will change as you add costs and sales.",
+  "resultBreakdown": "Where the money went",
+  "accountTitle": "Account",
+  "accountSignIn": "Sign in",
+  "accountSignOut": "Sign out",
+  "accountContinueAsGuest": "Continue without an account",
+  "accountWithGoogle": "Continue with Google",
+  "accountWithEmail": "Use email and password",
+  "accountSignedInAs": "Signed in as {email}",
+  "@accountSignedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSignInFailed": "Sign-in did not finish. Please try again.",
+  "accountOpensBrowser": "Both buttons open a secure page to sign in. Your password is never typed into this app.",
+  "accountUnavailable": "This copy of the app has no account service set up, so you can only continue without an account.",
+  "guestBannerTitle": "Saved on this phone only",
+  "guestBannerBody": "Your records are not backed up. If this phone is lost or broken they cannot be recovered. Create an account to keep them safe — everything you have entered comes with you.",
+  "guestBannerAction": "Create an account",
+  "guestBannerDismiss": "Not now",
+  "signOutTitle": "Sign out?",
+  "signOutBody": "Your records stay backed up and come back when you sign in again. They will be removed from this phone.",
+  "syncNotBackedUpTitle": "Records are not being backed up",
+  "syncNotBackedUpBody": "Something is stopping your records reaching the backup. They are still safe on this phone, but a lost phone would lose them. Last error: {error}",
+  "@syncNotBackedUpBody": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "syncLastBackedUp": "Last backed up {when}",
+  "@syncLastBackedUp": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "syncNever": "never",
+  "restoreInProgress": "Bringing your records back…",
+  "restoreDone": "{count} records restored",
+  "@restoreDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scheduleTitle": "Fertilizer",
+  "scheduleNone": "No fertilizer steps for this cropping yet.",
+  "scheduleAddStep": "Add a step",
+  "scheduleUpcoming": "Coming up",
+  "scheduleDone": "Done",
+  "scheduleSkipped": "Skipped",
+  "scheduleOverdue": "Overdue",
+  "scheduleDueOn": "Due {date}",
+  "@scheduleDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "scheduleDayAfterPlanting": "{days} days after planting",
+  "@scheduleDayAfterPlanting": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "scheduleBuy": "{bags} bags ({kg} kg)",
+  "@scheduleBuy": {
+    "placeholders": {
+      "bags": {
+        "type": "String"
+      },
+      "kg": {
+        "type": "String"
+      }
+    }
+  },
+  "scheduleRate": "{rate} kg per hectare",
+  "@scheduleRate": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "scheduleAfterHarvest": "The crop is off the field, so nothing more is due.",
+  "markDoneTitle": "Mark as done",
+  "markDoneDate": "Date applied",
+  "markDoneProduct": "What you used",
+  "markDoneQuantity": "How much (kg)",
+  "markDoneCost": "What it cost",
+  "markDoneCostHelp": "Leave empty if you are not recording the cost. Entering it adds a fertilizer expense to this cropping.",
+  "markDoneSkip": "Skip this one",
+  "markSkipTitle": "Skip this application?",
+  "markSkipReason": "Why (optional)",
+  "markSkipConfirm": "Skip it",
+  "markUndo": "Undo",
+  "settingsTitle": "Settings",
+  "settingsReminders": "Fertilizer reminders",
+  "settingsRemindersHelp": "Get a reminder 2 days before each application is due, and again on the day. Turn this off and you will still see what is coming up inside the app.",
+  "settingsRemindersDenied": "Your phone is blocking notifications for this app. You can still see upcoming applications inside the app.",
+  "homeTitle": "Saka",
+  "homeHarvestExpected": "Harvest expected {date}",
+  "@homeHarvestExpected": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeUnsoldRemaining": "{quantity} kg {basis} still unsold",
+  "@homeUnsoldRemaining": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "basis": {
+        "type": "String"
+      }
+    }
+  },
+  "homeAwaitingClosureHelp": "Harvested, but still open for sales and costs.",
+  "homeViewFields": "All fields",
+  "homeDueToday": "Due today",
+  "homeDueIn": "Due in {days} days",
+  "@homeDueIn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeDueOverdue": "Overdue by {days} days",
+  "@homeDueOverdue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "compareTitle": "Compare croppings",
+  "compareNone": "No croppings to compare yet",
+  "compareNoneFiltered": "No croppings match these filters",
+  "compareAllFields": "All fields",
+  "compareAllCrops": "All crops",
+  "compareAllSeasons": "Both seasons",
+  "compareClearFilters": "Clear filters",
+  "compareCount": "{count, plural, =1{1 cropping} other{{count} croppings}}",
+  "@compareCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareFreshWeightNote": "Harvest is always recorded fresh from the field, so every yield and cost per kilo here is on the same basis and can be compared directly.",
+  "compareBestProfit": "Best profit",
+  "compareOpen": "Open",
+  "templatesTitle": "Fertilizer recommendations",
+  "templatesHelp": "These are the default steps used when you start a cropping. Change them to follow your soil test or your local agriculturist — your changes are kept even when new guidance arrives.",
+  "templatesNone": "No recommendations available yet",
+  "templateFor": "{crop}, {method}",
+  "@templateFor": {
+    "placeholders": {
+      "crop": {
+        "type": "String"
+      },
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "templateYourEdit": "Your version",
+  "templateStepCount": "{count, plural, =0{No steps} =1{1 step} other{{count} steps}}",
+  "@templateStepCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "templateAddStep": "Add a step",
+  "templateEditStep": "Edit step",
+  "templateStepStage": "Growth stage",
+  "templateStepDays": "Days after planting",
+  "templateStepProduct": "Fertilizer",
+  "templateStepRate": "Rate per hectare (kg)",
+  "templateRemoveStep": "Remove this step",
+  "templateRemoveConfirm": "Remove {stage} from this recommendation?",
+  "@templateRemoveConfirm": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "templateEditNote": "Croppings you have already started keep the steps they were given. Changes here apply to croppings you start from now on.",
+  "templateMoveUp": "Move up",
+  "templateMoveDown": "Move down",
+  "varietyAdd": "Add a variety",
+  "varietyName": "Variety name",
+  "varietyMaturity": "Days to harvest (optional)",
+  "varietyMaturityHelp": "Leave empty if you do not know. You can enter the expected harvest date yourself when you start a cropping.",
+  "varietyCrop": "Crop",
+  "scheduleEditTitle": "Change this schedule",
+  "scheduleEditNote": "This changes only this cropping. Your saved recommendations stay as they are.",
+  "scheduleAddStepHere": "Add a step",
+  "scheduleRemoveStep": "Remove this step",
+  "scheduleRemoveConfirm": "Remove {stage} from this cropping's schedule?",
+  "@scheduleRemoveConfirm": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "errorRequired": "Fill this in",
+  "templatesNoSteps": "No steps yet. Add one below to build this recommendation."
+}

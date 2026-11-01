@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "${api_name}",
+    "description": "Crop Tracking Sync API. Routing source of truth for API Gateway; the human-facing contract is specs/001-crop-tracking/contracts/api.openapi.yaml.",
+    "version": "1.0.0"
+  },
+  "security": [{ "cognitoJwt": [] }],
+  "paths": {
+    "/v1/snapshot": {
+      "get": {
+        "operationId": "getSnapshot",
+        "summary": "Full restore for a reinstalled app (FR-054).",
+        "responses": { "200": { "description": "Snapshot" } },
+        "x-amazon-apigateway-integration": {
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${snapshot_invoke_arn}"
+        }
+      }
+    },
+    "/v1/mutations": {
+      "post": {
+        "operationId": "postMutations",
+        "summary": "Applies the outbox in strict seq order (sync-protocol I2, I3).",
+        "responses": { "200": { "description": "Applied" } },
+        "x-amazon-apigateway-integration": {
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${mutations_invoke_arn}"
+        }
+      }
+    },
+    "/v1/account": {
+      "delete": {
+        "operationId": "deleteAccount",
+        "summary": "Account deletion (FR-063).",
+        "responses": { "204": { "description": "Deleted" } },
+        "x-amazon-apigateway-integration": {
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${account_invoke_arn}"
+        }
+      }
+    },
+    "/v1/reference-data": {
+      "get": {
+        "operationId": "getReferenceData",
+        "summary": "Public agronomic reference data.",
+        "description": "Deliberately UNAUTHENTICATED (research.md R10). Identical for every farmer, carries nothing account-specific, and keeping it off the authenticated path is what lets a guest get correct recommendations before signing in (FR-026e).",
+        "security": [],
+        "responses": { "200": { "description": "Reference bundle" } },
+        "x-amazon-apigateway-integration": {
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${reference_invoke_arn}"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cognitoJwt": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "x-amazon-apigateway-authtype": "cognito_user_pools",
+        "x-amazon-apigateway-authorizer": {
+          "type": "cognito_user_pools",
+          "providerARNs": ["${user_pool_arn}"]
+        }
+      }
+    }
+  }
+}

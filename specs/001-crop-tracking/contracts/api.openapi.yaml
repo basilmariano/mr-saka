@@ -1,0 +1,307 @@
+openapi: 3.1.0
+info:
+  title: Crop Tracking Sync API
+  version: 1.0.0
+  description: |
+    Durable-copy API for the crop tracking Android app (feature 001-crop-tracking).
+
+    This API is NOT the source of truth for calculations. The device computes every
+    figure the farmer sees, offline, from its local Drift (SQLite) database. This API exists to
+    (a) persist records durably so a lost phone does not lose a history, and
+    (b) hand the whole history back when the farmer signs in on a new device.
+
+    AUTHORIZATION INVARIANT (FR-062): the owning account is derived EXCLUSIVELY from
+    the verified Cognito JWT `sub` claim. No request body field, query parameter, or
+    header may influence which account's partition is read or written. A request that
+    names an account id is rejected, not honoured.
+
+servers:
+  - url: https://api.example.com
+    description: Replace with the deployed API Gateway stage URL
+
+security:
+  - cognitoJwt: []
+
+paths:
+  /v1/snapshot:
+    get:
+      summary: Download the signed-in farmer's complete history
+      description: |
+        Satisfies FR-052 and FR-064 — restore onto a new or reinstalled device with
+        nothing re-entered. Returns every non-deleted record the account owns.
+        Paginated because a multi-season history exceeds a single response.
+      operationId: getSnapshot
+      parameters:
+        - name: cursor
+          in: query
+          schema: { type: string }
+          description: Opaque continuation token from a previous page.
+        - name: since
+          in: query
+          schema: { type: string, format: date-time }
+          description: |
+            Optional. When present, returns only records changed at or after this
+            instant, including soft-deleted ones. Used for a cheap catch-up rather
+            than a full restore.
+      responses:
+        "200":
+          description: A page of records.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [records, hasMore]
+                properties:
+                  records:
+                    type: array
+                    items: { $ref: "#/components/schemas/Record" }
+                  nextCursor: { type: string }
+                  hasMore: { type: boolean }
+                  serverTime: { type: string, format: date-time }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/mutations:
+    post:
+      summary: Apply an ordered batch of mutations from the device outbox
+      description: |
+        The device drains its outbox in strict `seq` order (see sync-protocol.md).
+        Mutations in a batch MUST be applied in array order. If one fails, the server
+        applies everything before it, stops, and reports the index that failed — the
+        device then halts and retries from there, so a later correction can never be
+        applied before the value it replaces (FR-053e).
+
+        IDEMPOTENT: every record carries a client-generated UUID. Re-sending a
+        mutation that already applied is a no-op returning `applied`, so a retry after
+        an ambiguous timeout cannot duplicate an expense and corrupt the farmer's
+        totals.
+      operationId: postMutations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mutations]
+              properties:
+                mutations:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  items: { $ref: "#/components/schemas/Mutation" }
+      responses:
+        "200":
+          description: |
+            Every mutation was applied, or processing stopped at `failedIndex`.
+            HTTP 200 with a `failedIndex` is deliberate — mutations before it DID
+            apply, and the device must not re-send them.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [appliedCount]
+                properties:
+                  appliedCount: { type: integer }
+                  failedIndex:
+                    type: integer
+                    description: Index of the first mutation that failed; absent if all applied.
+                  error: { $ref: "#/components/schemas/Error" }
+                  serverTime: { type: string, format: date-time }
+        "400":
+          description: The batch itself is malformed; nothing was applied.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "413":
+          description: Batch exceeds 100 mutations.
+
+  /v1/reference-data:
+    get:
+      summary: Fetch the current agronomic reference bundle
+      description: |
+        Varieties with maturity days, and fertilizer templates per crop and planting
+        method, as published by PhilRice / the Bureau of Plant Industry (research.md
+        R9, R10).
+
+        UNAUTHENTICATED AND CACHEABLE BY DESIGN: this is public agronomic guidance,
+        identical for every farmer and containing nothing account-specific. Keeping it
+        off the authenticated path also means a guest (FR-059) gets correct
+        recommendations.
+
+        Bundles are immutable and monotonically versioned. The client applies a newer
+        bundle in ONE transaction and must preserve rows the farmer edited themselves
+        (source == FARMER) — see data-model.md, ReferenceBundle.
+      operationId: getReferenceData
+      security: []
+      parameters:
+        - name: since
+          in: query
+          schema: { type: integer }
+          description: Client's current bundle version. Returns 304 if nothing newer exists.
+      responses:
+        "200":
+          description: The current bundle.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ReferenceBundle" }
+          headers:
+            Cache-Control:
+              schema: { type: string }
+              description: Long max-age; bundles are immutable per version.
+        "204":
+          description: |
+            This deployment publishes no bundle at all. Only returned when the
+            caller sent no `since`: a caller who has no version cannot be told
+            that their version is current. The app falls back to the bundle it
+            ships with (research.md R9), so this is a normal state rather than an
+            error, and it is what the endpoint returns until feature 002 publishes
+            the first bundle.
+        "304":
+          description: |
+            Client already has the current version. Only returned in response to a
+            `since` parameter, because it is a statement about what the client
+            holds.
+
+  /v1/account:
+    delete:
+      summary: Delete the account and every record it owns
+      description: |
+        Not required by any FR, but a farmer who signs up must be able to leave.
+        Irreversible. The device clears its local database on success.
+      operationId: deleteAccount
+      responses:
+        "204": { description: Deleted. }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+components:
+  securitySchemes:
+    cognitoJwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Cognito User Pool access token, validated by API Gateway before Lambda runs.
+
+  responses:
+    Unauthorized:
+      description: Missing, expired, or invalid token.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    EntityType:
+      type: string
+      enum: [field, cropping, variety, fertilizerTemplate, scheduledApplication, expense, harvest, sale]
+
+    Record:
+      type: object
+      required: [entityType, id, updatedAt, deleted, body]
+      properties:
+        entityType: { $ref: "#/components/schemas/EntityType" }
+        id:
+          type: string
+          format: uuid
+          description: Client-generated on the device before the first save.
+        updatedAt: { type: string, format: date-time }
+        deleted:
+          type: boolean
+          description: |
+            Soft delete. A deletion made offline must propagate; a hard delete would
+            let the next snapshot resurrect the record.
+        body:
+          type: object
+          additionalProperties: true
+          description: |
+            Entity fields as defined in data-model.md. Monetary values are integer
+            centavos and weights are integer grams — NEVER decimals (SC-009).
+            The server validates shape and invariants but does not recompute
+            derived figures; the device owns calculation.
+
+    Mutation:
+      type: object
+      required: [seq, operation, entityType, id]
+      properties:
+        seq:
+          type: integer
+          format: int64
+          description: The device outbox sequence. Strictly increasing within a batch.
+        operation:
+          type: string
+          enum: [upsert, delete]
+        entityType: { $ref: "#/components/schemas/EntityType" }
+        id: { type: string, format: uuid }
+        updatedAt: { type: string, format: date-time }
+        body:
+          type: object
+          additionalProperties: true
+          description: Required for `upsert`; omitted for `delete`.
+
+    ReferenceBundle:
+      type: object
+      required: [version, publishedAt, varieties, templates]
+      properties:
+        version:
+          type: integer
+          description: Monotonically increasing; immutable once published.
+        publishedAt: { type: string, format: date-time }
+        varieties:
+          type: array
+          items:
+            type: object
+            required: [id, name, crop, sourceAttribution]
+            properties:
+              id: { type: string, format: uuid }
+              name: { type: string }
+              crop: { type: string, enum: [rice, corn] }
+              maturityDays:
+                type: integer
+                nullable: true
+                description: |
+                  Null is meaningful — the farmer must then enter the expected harvest
+                  date manually rather than the app guessing one.
+              sourceAttribution:
+                type: string
+                description: e.g. "PhilRice, 2026 rice varietal guide". Required — FR-026
+                  says recommendations are general guidance, which is only honest if
+                  their origin is recorded.
+        templates:
+          type: array
+          items:
+            type: object
+            required: [crop, plantingMethod, steps, sourceAttribution]
+            properties:
+              crop: { type: string, enum: [rice, corn] }
+              plantingMethod: { type: string, enum: [transplanted, direct_seeded] }
+              sourceAttribution: { type: string }
+              steps:
+                type: array
+                items:
+                  type: object
+                  required: [daysAfterPlanting, growthStage, product, ratePerHectareGrams]
+                  properties:
+                    daysAfterPlanting: { type: integer }
+                    growthStage: { type: string }
+                    product: { type: string }
+                    ratePerHectareGrams:
+                      type: integer
+                      description: Integer grams — never a decimal (SC-009).
+                    sortOrder: { type: integer }
+
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum:
+            - unauthorized
+            - validation_failed
+            - malformed_batch
+            - out_of_order
+            - internal
+        message:
+          type: string
+          description: Safe to show the farmer; never leaks another account's data.
+        details:
+          type: object
+          additionalProperties: true

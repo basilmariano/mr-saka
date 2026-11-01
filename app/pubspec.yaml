@@ -1,0 +1,58 @@
+name: saka
+description: "Crop tracking for Philippine rice and corn farmers."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Local store (system of record on device) - research.md R3
+  drift: ^2.20.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.1.0
+  path: ^1.9.0
+
+  # Background sync + offline reminders - research.md R3, R6
+
+  flutter_local_notifications: ^17.2.0
+  timezone: ^0.9.4
+
+  # HTTP + state
+  dio: ^5.7.0
+  flutter_riverpod: ^2.5.0
+
+  # Dates and formatting (phase-2 localisation seam) - FR-056
+  intl: ^0.20.2
+
+  # Client-generated ids make sync retries idempotent - sync-protocol.md I3
+  uuid: ^4.5.0
+  forui: ^0.16.0
+
+  # Sign-in - research.md R4. Cognito's hosted UI over authorization-code + PKCE,
+  # which is the flow a public client must use: the app ships on the handset and
+  # can hold no secret, so no in-app form ever sees the farmer's password.
+  flutter_appauth: ^11.0.0
+  flutter_secure_storage: ^10.3.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  test: ^1.25.0
+  drift_dev: ^2.20.0
+  build_runner: ^2.4.0
+  mocktail: ^1.0.0
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/reference/
